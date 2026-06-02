@@ -1,0 +1,50 @@
+# Ignore bundler config
+/.bundle
+/vendor/bundle
+
+# Ignore Rails log and temp files
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore database files (if using SQLite in test/dev)
+*.sqlite3
+*.sqlite3-journal
+
+# Ignore Rails credentials and master key
+/config/master.key
+
+# Ignore system files
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Ignore node/yarn/npm files if using JS
+/node_modules
+/yarn-error.log
+/package-lock.json
+/pnpm-lock.yaml
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore coverage/test reports
+coverage/
+rspec_junit_formatter_output.xml
+*.resultset.json
+
+# Ignore IDE/editor settings
+/.idea
+.vscode
+*.iml
+
+# Ignore temp files created by Rails generators
+/public/assets
+/public/packs
+/public/packs-test
+.byebug_history
+
+# Ignore docker files if you don't want them committed
+Dockerfile
+.dockerignore
