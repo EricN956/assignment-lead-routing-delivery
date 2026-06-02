@@ -53,3 +53,9 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
+gem "activeadmin", "~> 4.0.0.beta22"
+
+gem "devise"
+
+gem "cssbundling-rails"
