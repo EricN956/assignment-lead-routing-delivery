@@ -33,6 +33,11 @@ class Lead < ApplicationRecord
            dependent: :destroy,
            inverse_of: :lead
 
+  has_many :lead_deliveries, dependent: :destroy
+  has_many :recipients, through: :lead_deliveries
+  has_many :dispatch_attempts, through: :lead_deliveries
+  has_many :conversions, dependent: :destroy
+
   validates :source_claim_id, presence: true, uniqueness: true
   validates :publisher, presence: true
   validates :stage, presence: true, inclusion: { in: STAGES }
