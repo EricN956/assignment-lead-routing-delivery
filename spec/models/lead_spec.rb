@@ -85,4 +85,19 @@ RSpec.describe Lead, type: :model do
 
     expect(lead).to be_terminal
   end
+  it "records audit events without changing the current stage" do
+    lead.save!
+
+    lead.record_stage_event!(
+      reason: "duplicate_import_skipped",
+      metadata: { "importer" => "Leads::JsonImporter" }
+    )
+
+    expect(lead.reload.stage).to eq("received")
+    expect(lead.latest_stage_event).to have_attributes(
+      from_stage: "received",
+      to_stage: "received",
+      reason: "duplicate_import_skipped"
+    )
+  end
 end

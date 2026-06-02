@@ -43,10 +43,9 @@ module Leads
       validation_result = PayloadValidator.call(attributes)
 
       source_claim_id = attributes[:source_claim_id]
-
-      if source_claim_id.present? && Lead.exists?(source_claim_id: source_claim_id)
-        summary.record_duplicate
-        return
+      if source_claim_id.present?
+        existing_lead = Lead.find_by(source_claim_id: source_claim_id)
+        return record_duplicate(existing_lead, payload) if existing_lead
       end
 
       lead = Lead.create!(lead_attributes(attributes, validation_result))
@@ -55,20 +54,35 @@ module Leads
         lead.transition_to!(
           "validated",
           reason: "ingest_validation_passed",
-          metadata: { "importer" => self.class.name }
+          metadata: { "importer" => self.class.name, "path" => relative_path }
         )
         summary.record_valid
       else
         lead.transition_to!(
           "invalid",
           reason: "ingest_validation_failed",
-          metadata: { "errors" => validation_result.to_h }
+          metadata: { "errors" => validation_result.to_h, "importer" => self.class.name, "path" => relative_path }
         )
         summary.record_invalid
       end
     rescue StandardError => e
       summary.record_failure(identifier: payload_identifier(payload), error: e)
       Rails.logger.error("[Leads::JsonImporter] #{payload_identifier(payload)} #{e.class}: #{e.message}")
+    end
+
+    def record_duplicate(existing_lead, payload)
+      existing_lead.record_stage_event!(
+        reason: "duplicate_import_skipped",
+        metadata: {
+          "importer" => self.class.name,
+          "path" => relative_path,
+          "source_claim_id" => existing_lead.source_claim_id,
+          "existing_stage" => existing_lead.stage,
+          "payload_keys" => payload_keys(payload)
+        }
+      )
+
+      summary.record_duplicate
     end
 
     def lead_attributes(attributes, validation_result)
@@ -88,6 +102,18 @@ module Leads
       payload.to_h.with_indifferent_access[:source_claim_id].presence || "unknown"
     rescue NoMethodError
       "unknown"
+    end
+
+    def payload_keys(payload)
+      payload.to_h.keys.map(&:to_s).sort
+    rescue NoMethodError
+      []
+    end
+
+    def relative_path
+      path.relative_path_from(Rails.root).to_s
+    rescue ArgumentError
+      path.to_s
     end
   end
 end

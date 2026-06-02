@@ -69,6 +69,15 @@ class Lead < ApplicationRecord
     stage_events.order(created_at: :desc, id: :desc).first
   end
 
+  def record_stage_event!(from_stage: stage, to_stage: stage, reason:, metadata: {})
+    stage_events.create!(
+      from_stage: from_stage,
+      to_stage: to_stage,
+      reason: reason,
+      metadata: metadata || {}
+    )
+  end
+
   def transition_to!(to_stage, reason:, metadata: {})
     unless STAGES.include?(to_stage)
       raise ArgumentError, "Unsupported lead stage: #{to_stage}"
@@ -79,11 +88,11 @@ class Lead < ApplicationRecord
 
       update!(stage: to_stage)
 
-      stage_events.create!(
+      record_stage_event!(
         from_stage: previous_stage,
         to_stage: to_stage,
         reason: reason,
-        metadata: metadata || {}
+        metadata: metadata
       )
     end
   end
@@ -97,7 +106,7 @@ class Lead < ApplicationRecord
   end
 
   def record_initial_stage_event
-    stage_events.create!(
+    record_stage_event!(
       from_stage: nil,
       to_stage: stage,
       reason: "lead_received",

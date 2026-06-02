@@ -80,8 +80,8 @@ RSpec.describe Leads::JsonImporter do
     expect(lead.invalid_reason).to eq("email, phone")
   end
 
-  it "skips duplicate source claim ids safely" do
-    Lead.create!(
+  it "skips duplicate source claim ids safely and records an audit event" do
+    lead = Lead.create!(
       source_claim_id: "RAV-IMPORT-DUP",
       publisher: "publisher_alpha"
     )
@@ -97,6 +97,21 @@ RSpec.describe Leads::JsonImporter do
       "created" => 0,
       "duplicates" => 1,
       "failed" => 0
+    )
+
+    expect(Lead.where(source_claim_id: "RAV-IMPORT-DUP").count).to eq(1)
+    expect(lead.reload.stage).to eq("received")
+
+    duplicate_event = lead.stage_events.order(:created_at).last
+    expect(duplicate_event).to have_attributes(
+      from_stage: "received",
+      to_stage: "received",
+      reason: "duplicate_import_skipped"
+    )
+    expect(duplicate_event.metadata).to include(
+      "importer" => "Leads::JsonImporter",
+      "source_claim_id" => "RAV-IMPORT-DUP",
+      "existing_stage" => "received"
     )
   end
 
@@ -117,5 +132,27 @@ RSpec.describe Leads::JsonImporter do
     expect do
       described_class.call(@file.path)
     end.to raise_error(ArgumentError, /must be an array/)
+  end
+  it "is idempotent when the same sample file is imported twice" do
+    first_summary = described_class.call(Rails.root.join("data/inbound_leads.json"))
+    second_summary = described_class.call(Rails.root.join("data/inbound_leads.json"))
+
+    expect(first_summary.to_h).to include(
+      "total" => 25,
+      "created" => 24,
+      "valid" => 20,
+      "invalid" => 4,
+      "duplicates" => 1,
+      "failed" => 0
+    )
+
+    expect(second_summary.to_h).to include(
+      "total" => 25,
+      "created" => 0,
+      "valid" => 0,
+      "invalid" => 0,
+      "duplicates" => 25,
+      "failed" => 0
+    )
   end
 end
