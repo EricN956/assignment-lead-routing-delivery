@@ -1,24 +1,42 @@
-# README
+# Mock Recipients Server
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A single, **dependency-free** Ruby process (stdlib only — no gems, no bundler) that
+simulates the three downstream recipients, a DNC scrub endpoint, and the
+asynchronous postback callbacks. Use it to develop and test your integrations
+without any real third-party credentials.
 
-Things you may want to cover:
+## Run it
 
-* Ruby version
+```bash
+# basic (postbacks are logged but not delivered):
+ruby mock_recipients/server.rb
 
-* System dependencies
+# with postbacks delivered to your running service:
+CALLBACK_URL=http://localhost:3000/postbacks/recipients ruby mock_recipients/server.rb
 
-* Configuration
+# custom port:
+PORT=4100 ruby mock_recipients/server.rb
+```
 
-* Database creation
+Default port is `3100`. Health check:
 
-* Database initialization
+```bash
+curl http://localhost:3100/health
+```
 
-* How to run the test suite
+## What it does
 
-* Services (job queues, cache servers, search engines, etc.)
+- Serves `/scrub/dnc`, `/apex/v2/leads`, `/beacon/api/addLead`, `/citadel/intake`
+  with the exact contracts in [`../docs/RECIPIENT_APIS.md`](../docs/RECIPIENT_APIS.md).
+- Each recipient is intentionally different (JSON vs form-encoded, header vs body
+  auth, success-in-status vs success-in-body, retryable 503 / 429, duplicate 409).
+- A few seconds after accepting a lead it fires a **postback** to `CALLBACK_URL`.
+  **~25% of postbacks are sent twice** so you can prove your handling is idempotent.
 
-* Deployment instructions
+## Notes
 
-* ...
+- State (seen claim IDs, rate-limit windows) is **in-memory** and resets on restart.
+- The shared secret used for the postback `signature` is `mock-shared-secret`.
+- Test API keys/tokens are in `docs/RECIPIENT_APIS.md`. They are fake.
+- Tested on Ruby 3.2+. It only uses `socket`, `net/http`, `json`, `uri`, `csv`,
+  `securerandom`, and `digest`.
