@@ -1,0 +1,45 @@
+default: &default
+  app:
+    name: "Lead Routing CRM"
+    default_timezone: "UTC"
+
+  mock_recipients:
+    base_url: <%= ENV.fetch("MOCK_RECIPIENTS_BASE_URL", "http://localhost:3100") %>
+    callback_url: <%= ENV.fetch("RECIPIENT_CALLBACK_URL", "http://localhost:3000/postbacks/recipients") %>
+
+  dnc:
+    endpoint_path: <%= ENV.fetch("DNC_ENDPOINT_PATH", "/scrub/dnc") %>
+
+  recipients:
+    apex:
+      code: "apex"
+      name: "Apex Legal Intake"
+      endpoint_path: "/apex/v2/leads"
+      auth_header: "X-Api-Key"
+      api_key: <%= ENV.fetch("APEX_API_KEY", "apex-test-key") %>
+
+    beacon:
+      code: "beacon"
+      name: "Beacon Claims"
+      endpoint_path: "/beacon/leads"
+      api_key: <%= ENV.fetch("BEACON_API_KEY", "beacon-test-key") %>
+
+    citadel:
+      code: "citadel"
+      name: "Citadel Case Desk"
+      endpoint_path: "/citadel/intake"
+      bearer_token: <%= ENV.fetch("CITADEL_BEARER_TOKEN", "citadel-test-token") %>
+
+  dispatch:
+    max_attempts: <%= ENV.fetch("DISPATCH_MAX_ATTEMPTS", 3).to_i %>
+    open_timeout_seconds: <%= ENV.fetch("DISPATCH_OPEN_TIMEOUT_SECONDS", 5).to_i %>
+    read_timeout_seconds: <%= ENV.fetch("DISPATCH_READ_TIMEOUT_SECONDS", 10).to_i %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
