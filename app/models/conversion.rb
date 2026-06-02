@@ -1,4 +1,6 @@
 class Conversion < ApplicationRecord
+  include JsonObjectValidatable
+
   DISPOSITIONS = %w[
     signed
     rejected
@@ -14,13 +16,5 @@ class Conversion < ApplicationRecord
   validates :disposition, presence: true, inclusion: { in: DISPOSITIONS }
   validates :idempotency_key, presence: true, uniqueness: true
 
-  validate :raw_payload_must_be_json_object
-
-  private
-
-  def raw_payload_must_be_json_object
-    return if raw_payload.is_a?(Hash)
-
-    errors.add(:raw_payload, "must be a JSON object")
-  end
+  validates_json_object :raw_payload
 end

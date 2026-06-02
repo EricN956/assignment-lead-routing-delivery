@@ -70,4 +70,19 @@ RSpec.describe Lead, type: :model do
   it "returns a displayable full name" do
     expect(lead.full_name).to eq("Casey Foster")
   end
+  it "knows whether it is dispatchable" do
+    lead.stage = "qualified"
+
+    expect(lead).to be_dispatchable
+
+    lead.test_lead = true
+
+    expect(lead).not_to be_dispatchable
+  end
+
+  it "knows whether it is terminal" do
+    lead.stage = "converted"
+
+    expect(lead).to be_terminal
+  end
 end

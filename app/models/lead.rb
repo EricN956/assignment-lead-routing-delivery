@@ -1,4 +1,6 @@
 class Lead < ApplicationRecord
+  include JsonObjectValidatable
+
   STAGES = %w[
     received
     invalid
@@ -42,6 +44,9 @@ class Lead < ApplicationRecord
   validates :publisher, presence: true
   validates :stage, presence: true, inclusion: { in: STAGES }
 
+  validates_json_object :prequal, :raw_payload, :validation_errors
+  validate :disqualification_reasons_must_be_array
+
   after_create :record_initial_stage_event
 
   scope :by_stage, ->(stage) { where(stage: stage) }
@@ -52,8 +57,16 @@ class Lead < ApplicationRecord
     [first_name, last_name].compact_blank.join(" ")
   end
 
+  def dispatchable?
+    stage == "qualified" && !test_lead?
+  end
+
   def terminal?
     TERMINAL_STAGES.include?(stage)
+  end
+
+  def latest_stage_event
+    stage_events.order(created_at: :desc, id: :desc).first
   end
 
   def transition_to!(to_stage, reason:, metadata: {})
@@ -76,6 +89,12 @@ class Lead < ApplicationRecord
   end
 
   private
+
+  def disqualification_reasons_must_be_array
+    return if disqualification_reasons.is_a?(Array)
+
+    errors.add(:disqualification_reasons, "must be a JSON array")
+  end
 
   def record_initial_stage_event
     stage_events.create!(

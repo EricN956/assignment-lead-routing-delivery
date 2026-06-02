@@ -43,4 +43,15 @@ RSpec.describe LeadDelivery, type: :model do
     expect(delivery.successful?).to be(true)
     expect(delivery.final?).to be(true)
   end
+  it "knows failed and skipped are final but not successful" do
+    delivery.status = "failed"
+
+    expect(delivery).not_to be_successful
+    expect(delivery).to be_final
+
+    delivery.status = "skipped"
+
+    expect(delivery).not_to be_successful
+    expect(delivery).to be_final
+  end
 end
