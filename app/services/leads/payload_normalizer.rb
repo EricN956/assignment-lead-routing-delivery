@@ -74,7 +74,9 @@ module Leads
     end
 
     def boolean_value(value)
-      ActiveModel::Type::Boolean.new.cast(value)
+      return false if value.nil?
+
+      ActiveModel::Type::Boolean.new.cast(value) || false
     end
 
     def hash_value(value)
