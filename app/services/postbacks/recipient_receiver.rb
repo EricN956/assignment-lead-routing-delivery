@@ -48,6 +48,7 @@ module Postbacks
       return ignored_result("unknown_recipient", lead, recipient) unless recipient
 
       record_postback_event!(lead, recipient)
+      ConversionRecorder.call(lead: lead, recipient: recipient, payload: payload)
 
       Result.new(
         "accepted",

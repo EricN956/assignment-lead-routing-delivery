@@ -42,7 +42,8 @@ RSpec.describe "Recipient postbacks", type: :request do
       "status" => "accepted",
       "message" => "postback accepted"
     )
-    expect(lead.reload.latest_stage_event.reason).to eq("recipient_postback_received")
+    expect(lead.reload.stage).to eq("converted")
+    expect(Conversion.where(lead: lead, recipient: recipient, disposition: "signed").count).to eq(1)
   end
 
   it "returns accepted for unknown source claim ids" do
@@ -66,7 +67,7 @@ RSpec.describe "Recipient postbacks", type: :request do
          params: payload.except(:recipient),
          as: :json
 
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
 
     body = JSON.parse(response.body)
     expect(body["errors"]).to include(

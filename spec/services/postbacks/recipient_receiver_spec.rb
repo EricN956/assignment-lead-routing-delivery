@@ -38,7 +38,7 @@ RSpec.describe Postbacks::RecipientReceiver do
     expect(result).to be_accepted
     expect(result.http_status).to eq(:accepted)
 
-    event = lead.reload.latest_stage_event
+    event = lead.reload.stage_events.find_by!(reason: "recipient_postback_received")
     expect(event).to have_attributes(
       from_stage: "delivered",
       to_stage: "delivered",
@@ -87,5 +87,20 @@ RSpec.describe Postbacks::RecipientReceiver do
 
     expect(result).to be_invalid
     expect(result.errors["disposition"]).to include("is not supported")
+  end
+  it "records a conversion for known lead and recipient" do
+    result = described_class.call(payload)
+
+    expect(result).to be_accepted
+    expect(Conversion.where(lead: lead, recipient: recipient, disposition: "signed").count).to eq(1)
+    expect(lead.reload.stage).to eq("converted")
+  end
+
+  it "does not duplicate conversions for repeated postbacks" do
+    described_class.call(payload)
+    described_class.call(payload)
+
+    expect(Conversion.where(lead: lead, recipient: recipient).count).to eq(1)
+    expect(lead.stage_events.where(reason: "duplicate_postback_ignored").count).to eq(1)
   end
 end
