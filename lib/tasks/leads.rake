@@ -179,3 +179,24 @@ namespace :leads do
     puts "failed=#{failed}"
   end
 end
+
+namespace :leads do
+  desc "Enqueue dispatch jobs for pending or retry-ready lead deliveries"
+  task dispatch: :environment do
+    scope = LeadDelivery
+      .where(status: %w[pending retrying])
+      .where("next_retry_at IS NULL OR next_retry_at <= ?", Time.current)
+
+    total = scope.count
+    enqueued = 0
+
+    scope.find_each do |delivery|
+      DispatchLeadDeliveryJob.perform_later(delivery.id)
+      enqueued += 1
+    end
+
+    puts "Dispatch enqueue complete"
+    puts "total=#{total}"
+    puts "enqueued=#{enqueued}"
+  end
+end
