@@ -140,3 +140,42 @@ namespace :leads do
     puts "failed=#{failed}"
   end
 end
+
+namespace :leads do
+  desc "Create recipient delivery records for qualified leads"
+  task route: :environment do
+    scope = Lead.where(stage: "qualified")
+    total = scope.count
+    routed = 0
+    unroutable = 0
+    deliveries = 0
+    failed = 0
+
+    scope.find_each do |lead|
+      result = Leads::RoutingProcessor.call(lead)
+
+      if result.routed?
+        routed += 1
+        deliveries += result.deliveries.count
+      elsif result.unroutable?
+        unroutable += 1
+      end
+    rescue StandardError => e
+      failed += 1
+      lead.record_stage_event!(
+        reason: "routing_failed_unexpectedly",
+        metadata: {
+          "error_class" => e.class.name,
+          "message" => e.message
+        }
+      )
+    end
+
+    puts "Routing complete"
+    puts "total=#{total}"
+    puts "routed=#{routed}"
+    puts "unroutable=#{unroutable}"
+    puts "deliveries=#{deliveries}"
+    puts "failed=#{failed}"
+  end
+end
