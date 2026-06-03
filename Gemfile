@@ -59,3 +59,8 @@ gem "activeadmin", "~> 4.0.0.beta22"
 gem "devise"
 
 gem "cssbundling-rails"
+
+
+group :test do
+  gem "webmock"
+end

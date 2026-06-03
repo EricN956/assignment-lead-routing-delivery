@@ -23,3 +23,79 @@ namespace :leads do
     end
   end
 end
+
+namespace :leads do
+  desc "Run DNC suppression check for validated leads"
+  task scrub_dnc: :environment do
+    scope = Lead.where(stage: "validated")
+    total = scope.count
+    scrubbed = 0
+    suppressed = 0
+    failed = 0
+
+    scope.find_each do |lead|
+      previous_stage = lead.stage
+      Leads::DncScrubber.call(lead)
+
+      case lead.reload.stage
+      when "scrubbed"
+        scrubbed += 1 if previous_stage == "validated"
+      when "suppressed"
+        suppressed += 1 if previous_stage == "validated"
+      end
+    rescue StandardError => e
+      failed += 1
+      lead.record_stage_event!(
+        reason: "dnc_check_failed",
+        metadata: {
+          "error_class" => e.class.name,
+          "message" => e.message
+        }
+      )
+    end
+
+    puts "DNC scrub complete"
+    puts "total=#{total}"
+    puts "scrubbed=#{scrubbed}"
+    puts "suppressed=#{suppressed}"
+    puts "failed=#{failed}"
+  end
+end
+
+namespace :leads do
+  desc "Run DNC suppression check for validated leads"
+  task scrub_dnc: :environment do
+    scope = Lead.where(stage: "validated")
+    total = scope.count
+    scrubbed = 0
+    suppressed = 0
+    failed = 0
+
+    scope.find_each do |lead|
+      previous_stage = lead.stage
+      Leads::DncScrubber.call(lead)
+
+      case lead.reload.stage
+      when "scrubbed"
+        scrubbed += 1 if previous_stage == "validated"
+      when "suppressed"
+        suppressed += 1 if previous_stage == "validated"
+      end
+    rescue StandardError => e
+      failed += 1
+      lead.record_stage_event!(
+        reason: "dnc_check_failed",
+        metadata: {
+          "error_class" => e.class.name,
+          "message" => e.message
+        }
+      )
+    end
+
+    puts "DNC scrub complete"
+    puts "total=#{total}"
+    puts "scrubbed=#{scrubbed}"
+    puts "suppressed=#{suppressed}"
+    puts "failed=#{failed}"
+  end
+end
