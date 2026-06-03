@@ -99,3 +99,44 @@ namespace :leads do
     puts "failed=#{failed}"
   end
 end
+
+namespace :leads do
+  desc "Run qualification rules for scrubbed leads"
+  task qualify: :environment do
+    scope = Lead.where(stage: "scrubbed")
+    total = scope.count
+    qualified = 0
+    disqualified = 0
+    test_leads = 0
+    failed = 0
+
+    scope.find_each do |lead|
+      Leads::QualificationProcessor.call(lead)
+
+      case lead.reload.stage
+      when "qualified"
+        qualified += 1
+      when "disqualified"
+        disqualified += 1
+      when "test"
+        test_leads += 1
+      end
+    rescue StandardError => e
+      failed += 1
+      lead.record_stage_event!(
+        reason: "qualification_failed_unexpectedly",
+        metadata: {
+          "error_class" => e.class.name,
+          "message" => e.message
+        }
+      )
+    end
+
+    puts "Qualification complete"
+    puts "total=#{total}"
+    puts "qualified=#{qualified}"
+    puts "disqualified=#{disqualified}"
+    puts "test=#{test_leads}"
+    puts "failed=#{failed}"
+  end
+end
