@@ -1,6 +1,10 @@
 require "rails_helper"
 
 RSpec.describe Postbacks::RecipientReceiver do
+  def signature_for(source_claim_id:, disposition:)
+    Digest::SHA256.hexdigest("#{source_claim_id}:#{disposition}:mock-shared-secret")
+  end
+
   let(:lead) do
     Lead.create!(
       source_claim_id: "RAV-POSTBACK-1",
@@ -28,7 +32,7 @@ RSpec.describe Postbacks::RecipientReceiver do
       external_id: "APX-1234",
       disposition: "signed",
       occurred_at: "2026-06-01T08:16:11Z",
-      signature: "abc123"
+      signature: signature_for(source_claim_id: lead.source_claim_id, disposition: "signed")
     }
   end
 
@@ -49,13 +53,17 @@ RSpec.describe Postbacks::RecipientReceiver do
       "source_claim_id" => "RAV-POSTBACK-1",
       "external_id" => "APX-1234",
       "disposition" => "signed",
-      "signature_present" => true
+      "signature_present" => true,
+      "signature_verified" => true
     )
   end
 
   it "gracefully ignores unknown source claim ids" do
     recipient
-    result = described_class.call(payload.merge(source_claim_id: "RAV-UNKNOWN"))
+    result = described_class.call(payload.merge(
+      source_claim_id: "RAV-UNKNOWN",
+      signature: signature_for(source_claim_id: "RAV-UNKNOWN", disposition: "signed")
+    ))
 
     expect(result).to be_ignored
     expect(result.http_status).to eq(:accepted)
@@ -102,5 +110,13 @@ RSpec.describe Postbacks::RecipientReceiver do
 
     expect(Conversion.where(lead: lead, recipient: recipient).count).to eq(1)
     expect(lead.stage_events.where(reason: "duplicate_postback_ignored").count).to eq(1)
+  end
+  it "rejects invalid signatures before recording conversions" do
+    result = described_class.call(payload.merge(signature: "bad-signature"))
+
+    expect(result).to be_invalid_signature
+    expect(result.http_status).to eq(:unauthorized)
+    expect(Conversion.where(lead: lead, recipient: recipient).count).to eq(0)
+    expect(lead.reload.stage).to eq("delivered")
   end
 end

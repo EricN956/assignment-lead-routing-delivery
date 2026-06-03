@@ -1,6 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "Recipient postbacks", type: :request do
+  def signature_for(source_claim_id:, disposition:)
+    Digest::SHA256.hexdigest("#{source_claim_id}:#{disposition}:mock-shared-secret")
+  end
+
   let(:lead) do
     Lead.create!(
       source_claim_id: "RAV-POSTBACK-REQ-1",
@@ -28,7 +32,7 @@ RSpec.describe "Recipient postbacks", type: :request do
       external_id: "BCN123456",
       disposition: "signed",
       occurred_at: "2026-06-01T08:16:11Z",
-      signature: "abc123"
+      signature: signature_for(source_claim_id: lead.source_claim_id, disposition: "signed")
     }
   end
 
@@ -50,7 +54,10 @@ RSpec.describe "Recipient postbacks", type: :request do
     recipient
 
     post "/postbacks/recipients",
-         params: payload.merge(source_claim_id: "RAV-UNKNOWN"),
+         params: payload.merge(
+      source_claim_id: "RAV-UNKNOWN",
+      signature: signature_for(source_claim_id: "RAV-UNKNOWN", disposition: "signed")
+    ),
          as: :json
 
     expect(response).to have_http_status(:accepted)
@@ -72,6 +79,22 @@ RSpec.describe "Recipient postbacks", type: :request do
     body = JSON.parse(response.body)
     expect(body["errors"]).to include(
       "recipient" => ["is required"]
+    )
+  end
+  it "returns unauthorized for invalid signatures" do
+    post "/postbacks/recipients",
+         params: payload.merge(signature: "bad-signature"),
+         as: :json
+
+    expect(response).to have_http_status(:unauthorized)
+
+    body = JSON.parse(response.body)
+    expect(body).to include(
+      "status" => "invalid_signature",
+      "message" => "postback signature invalid"
+    )
+    expect(body["errors"]).to include(
+      "signature" => ["is invalid"]
     )
   end
 end

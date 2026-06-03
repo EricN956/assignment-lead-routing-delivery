@@ -25,7 +25,11 @@ module Postbacks
       end
 
       def invalid?
-        status == "invalid"
+        status == "invalid" || status == "invalid_signature"
+      end
+
+      def invalid_signature?
+        status == "invalid_signature"
       end
     end
 
@@ -33,13 +37,15 @@ module Postbacks
       new(payload).call
     end
 
-    def initialize(payload)
+    def initialize(payload, signature_verifier: SignatureVerifier)
       @payload = normalize_payload(payload)
+      @signature_verifier = signature_verifier
     end
 
     def call
       errors = validation_errors
       return invalid_result(errors) if errors.any?
+      return invalid_signature_result unless signature_verifier.call(payload)
 
       lead = Lead.find_by(source_claim_id: payload.fetch("source_claim_id"))
       recipient = Recipient.find_by(code: payload.fetch("recipient"))
@@ -63,7 +69,7 @@ module Postbacks
 
     private
 
-    attr_reader :payload
+    attr_reader :payload, :signature_verifier
 
     def normalize_payload(raw_payload)
       source =
@@ -107,7 +113,8 @@ module Postbacks
           "external_id" => payload.fetch("external_id"),
           "disposition" => payload.fetch("disposition"),
           "occurred_at" => payload.fetch("occurred_at"),
-          "signature_present" => payload["signature"].present?
+          "signature_present" => payload["signature"].present?,
+          "signature_verified" => true
         }
       )
     end
@@ -118,6 +125,18 @@ module Postbacks
         :unprocessable_entity,
         "postback payload invalid",
         errors,
+        nil,
+        nil,
+        payload
+      )
+    end
+
+    def invalid_signature_result
+      Result.new(
+        "invalid_signature",
+        :unauthorized,
+        "postback signature invalid",
+        { "signature" => ["is invalid"] },
         nil,
         nil,
         payload
