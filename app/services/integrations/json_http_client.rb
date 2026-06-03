@@ -24,6 +24,15 @@ module Integrations
       execute(uri, request)
     end
 
+    def post_form(url:, payload:, headers: {})
+      uri = URI.parse(url)
+      request = Net::HTTP::Post.new(uri)
+      headers.each { |key, value| request[key] = value }
+      request.set_form_data(payload)
+
+      execute(uri, request)
+    end
+
     private
 
     attr_reader :open_timeout, :read_timeout
