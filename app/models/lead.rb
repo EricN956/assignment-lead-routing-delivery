@@ -53,6 +53,33 @@ class Lead < ApplicationRecord
   scope :dispatchable, -> { where(stage: "qualified", test_lead: false) }
   scope :terminal, -> { where(stage: TERMINAL_STAGES) }
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[
+      accident_state
+      created_at
+      email
+      first_name
+      id
+      incident_date
+      last_name
+      lead_type
+      phone
+      publisher
+      source_claim_id
+      stage
+      test_lead
+      updated_at
+    ]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[
+      lead_deliveries
+      recipients
+      stage_events
+    ]
+  end
+
   def full_name
     [first_name, last_name].compact_blank.join(" ")
   end
