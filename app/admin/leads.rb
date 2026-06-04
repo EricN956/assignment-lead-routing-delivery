@@ -104,6 +104,71 @@ ActiveAdmin.register Lead do
       end
     end
 
+    panel "Recipient Deliveries" do
+      table_for resource.lead_deliveries.includes(:recipient).order(created_at: :asc, id: :asc) do
+        column :id
+        column "Recipient" do |delivery|
+          delivery.recipient.code
+        end
+        column :status do |delivery|
+          status_tag(delivery.status)
+        end
+        column :external_id
+        column :attempt_count
+        column :next_retry_at
+        column :delivered_at
+        column :last_error_code
+        column :last_error_message
+        column :metadata do |delivery|
+          delivery.metadata.present? ? pre(JSON.pretty_generate(delivery.metadata)) : "—"
+        end
+      end
+    end
+
+    panel "Dispatch Attempts" do
+      table_for resource.dispatch_attempts.includes(lead_delivery: :recipient).order(created_at: :asc, id: :asc) do
+        column :id
+        column "Recipient" do |attempt|
+          attempt.lead_delivery.recipient.code
+        end
+        column :attempt_number
+        column :request_method
+        column :request_url
+        column :response_status
+        column :retryable
+        column :error_class
+        column :error_message
+        column "Request Body" do |attempt|
+          attempt.request_body.present? ? pre(JSON.pretty_generate(attempt.request_body)) : "—"
+        end
+        column "Response Body" do |attempt|
+          attempt.response_body.present? ? pre(JSON.pretty_generate(attempt.response_body)) : "—"
+        end
+        column :created_at
+      end
+    end
+
+    panel "Conversions and Postbacks" do
+      table_for resource.conversions.includes(:recipient).order(created_at: :asc, id: :asc) do
+        column :id
+        column "Recipient" do |conversion|
+          conversion.recipient.code
+        end
+        column :external_id
+        column :disposition do |conversion|
+          status_tag(conversion.disposition)
+        end
+        column :occurred_at
+        column :signature do |conversion|
+          conversion.signature.present? ? "[FILTERED]" : "—"
+        end
+        column "Raw Payload" do |conversion|
+          conversion.raw_payload.present? ? pre(JSON.pretty_generate(conversion.raw_payload)) : "—"
+        end
+        column :created_at
+      end
+    end
+
     panel "Lifecycle Timeline" do
       table_for resource.stage_events.order(created_at: :asc, id: :asc) do
         column :created_at
