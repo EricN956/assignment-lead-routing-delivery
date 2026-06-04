@@ -6,3 +6,2023 @@
 @source "../../../vendor/bundle/ruby/3.2.0/gems/activeadmin-4.0.0.beta22/app/views/**/*.erb";
 @source "../../../vendor/bundle/ruby/3.2.0/gems/activeadmin-4.0.0.beta22/app/helpers/**/*.rb";
 @source "../../../vendor/bundle/ruby/3.2.0/gems/activeadmin-4.0.0.beta22/lib/**/*.rb";
+
+:root {
+  --crm-bg: #f5f7fb;
+  --crm-card: #ffffff;
+  --crm-soft: #f8fafc;
+  --crm-sidebar: #071225;
+  --crm-border: #e2e8f0;
+  --crm-text: #0f172a;
+  --crm-muted: #64748b;
+  --crm-blue: #2563eb;
+  --crm-green: #16a34a;
+  --crm-red: #dc2626;
+  --crm-yellow: #d97706;
+  --crm-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+}
+
+html,
+body {
+  background: var(--crm-bg) !important;
+  color: var(--crm-text) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+/* Hide items that do not help the assessment UI */
+.dark-mode-toggle,
+[data-item-id="comments"],
+#filters_sidebar_section,
+.paginated-collection-footer {
+  display: none !important;
+}
+
+/* Keep only sort icons small/hidden. Do not shrink user avatar globally. */
+.data-table-sorted-icon,
+th svg {
+  display: none !important;
+}
+
+/* Top bar */
+body > div:first-child {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--crm-border) !important;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-test-site-title] {
+  color: var(--crm-text) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Make user avatar visible again */
+#user-menu-button,
+#user-menu-button svg {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+/* Sidebar */
+#main-menu {
+  background: linear-gradient(180deg, #071225 0%, #020817 100%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 22px 16px !important;
+}
+
+#main-menu a {
+  color: #cbd5e1 !important;
+  border-radius: 12px !important;
+  margin-bottom: 8px !important;
+  font-weight: 700 !important;
+  padding: 12px 14px !important;
+}
+
+#main-menu a:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+#main-menu a.selected,
+#main-menu [data-open] a {
+  background: var(--crm-blue) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25) !important;
+}
+
+/* Page shell */
+[data-test-page-header] {
+  background: transparent !important;
+  border-bottom: none !important;
+  padding: 26px 34px 8px !important;
+}
+
+[data-test-page-header] h2,
+h1,
+h2,
+h3 {
+  color: var(--crm-text) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.025em !important;
+}
+
+[data-test-page-header] a {
+  /* color: var(--crm-muted) !important; */
+  color: white;
+}
+
+[data-test-page-content] {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 14px 34px 34px !important;
+  background: transparent !important;
+}
+
+.main-content-container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Login page */
+.crm-login-shell {
+  min-height: calc(100vh - 84px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.crm-login-card {
+  width: 430px;
+  background: #ffffff;
+  border: 1px solid var(--crm-border);
+  border-radius: 22px;
+  padding: 30px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14);
+}
+
+.crm-login-brand {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.crm-login-logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--crm-blue);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.22);
+}
+
+.crm-login-brand h1 {
+  margin: 0;
+  font-size: 23px;
+  line-height: 1.1;
+}
+
+.crm-login-brand p {
+  margin: 5px 0 0;
+  color: var(--crm-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.crm-login-field {
+  margin-bottom: 16px;
+}
+
+.crm-login-field label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.crm-login-field input {
+  width: 100% !important;
+}
+
+.crm-login-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.crm-login-submit {
+  width: 100% !important;
+  padding: 12px 16px !important;
+}
+
+.crm-login-links {
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* Dashboard */
+.crm-hero {
+  background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%) !important;
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 18px !important;
+  padding: 18px 20px !important;
+  margin-bottom: 16px !important;
+  box-shadow: var(--crm-shadow) !important;
+}
+
+.crm-hero h3 {
+  margin: 0 0 5px !important;
+  font-size: 20px !important;
+}
+
+.crm-hero p {
+  margin: 0 !important;
+  color: var(--crm-muted) !important;
+}
+
+.crm-stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  margin-bottom: 16px !important;
+}
+
+.crm-stat-card {
+  background: var(--crm-card) !important;
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 16px !important;
+  padding: 14px 16px !important;
+  box-shadow: var(--crm-shadow) !important;
+}
+
+.crm-stat-card span {
+  display: block !important;
+  color: var(--crm-muted) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin-bottom: 7px !important;
+}
+
+.crm-stat-card strong {
+  color: var(--crm-text) !important;
+  font-size: 27px !important;
+  line-height: 1 !important;
+  font-weight: 850 !important;
+}
+
+.crm-dashboard-main-grid,
+.crm-grid-two {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  align-items: start !important;
+}
+
+/* Donut chart */
+.crm-donut-wrap {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 22px;
+  align-items: center;
+}
+
+.crm-donut {
+  width: 190px;
+  height: 190px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.05);
+}
+
+.crm-donut-hole {
+  width: 108px;
+  height: 108px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid var(--crm-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.crm-donut-hole strong {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.crm-donut-hole span {
+  color: var(--crm-muted);
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.crm-chart-list {
+  display: grid;
+  gap: 8px;
+}
+
+.crm-chart-row {
+  display: grid !important;
+  grid-template-columns: 125px 1fr 40px !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+
+.crm-chart-track {
+  height: 9px !important;
+  background: #e2e8f0 !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+}
+
+.crm-chart-fill {
+  height: 100% !important;
+  min-width: 4px !important;
+  background: var(--crm-blue) !important;
+  border-radius: 999px !important;
+}
+
+.crm-chart-value {
+  text-align: right !important;
+  font-weight: 800 !important;
+  color: var(--crm-text) !important;
+}
+
+/* Panels */
+.panel {
+  background: var(--crm-card) !important;
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 18px !important;
+  margin-bottom: 16px !important;
+  overflow: hidden !important;
+  box-shadow: var(--crm-shadow) !important;
+}
+
+.panel-title,
+.panel h3 {
+  background: var(--crm-soft) !important;
+  border-bottom: 1px solid var(--crm-border) !important;
+  color: var(--crm-text) !important;
+  padding: 13px 16px !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+}
+
+.panel-body,
+.panel_contents {
+  padding: 16px !important;
+  overflow-x: auto !important;
+}
+
+/* Tables */
+table,
+.data-table,
+.index_table,
+.paginated_collection_contents table,
+.paginated-collection-contents table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  background: var(--crm-card) !important;
+}
+
+thead,
+.data-table thead,
+.index_table thead {
+  background: #f1f5f9 !important;
+}
+
+th {
+  color: #475569 !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  white-space: nowrap !important;
+}
+
+td,
+th {
+  padding: 10px 12px !important;
+  border-bottom: 1px solid var(--crm-border) !important;
+  vertical-align: middle !important;
+}
+
+td {
+  color: var(--crm-text) !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+tr:hover td {
+  background: #f8fafc !important;
+}
+
+/* Index wrapper and pagination */
+.paginated-collection {
+  background: var(--crm-card) !important;
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  box-shadow: var(--crm-shadow) !important;
+}
+
+.paginated-collection-contents {
+  overflow-x: auto !important;
+}
+
+.paginated-collection-pagination,
+.pagination-information {
+  padding: 12px 14px !important;
+  color: var(--crm-muted) !important;
+  font-size: 13px !important;
+}
+
+.pagination {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 0 14px 14px !important;
+}
+
+.pagination a,
+.pagination span {
+  min-width: 34px !important;
+  height: 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--crm-border) !important;
+  background: #ffffff !important;
+  color: #334155 !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+}
+
+.pagination .current,
+.pagination span.current {
+  background: var(--crm-blue) !important;
+  color: #ffffff !important;
+  border-color: var(--crm-blue) !important;
+}
+
+/* Scopes */
+.scopes,
+.scopes ul {
+  margin-bottom: 14px !important;
+}
+
+.scopes a,
+.scopes .current a,
+.index-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  border-radius: 999px !important;
+  padding: 6px 10px !important;
+  margin: 0 5px 7px 0 !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  background: #ffffff !important;
+  color: #334155 !important;
+  border: 1px solid var(--crm-border) !important;
+}
+
+.scopes .current a,
+.index-button-selected {
+  background: var(--crm-blue) !important;
+  color: #ffffff !important;
+  border-color: var(--crm-blue) !important;
+}
+
+/* Inputs/buttons */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
+  background: #ffffff !important;
+  color: var(--crm-text) !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  padding: 9px 11px !important;
+  box-sizing: border-box !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  border-color: var(--crm-blue) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+input[type="submit"],
+button,
+.button,
+a.button,
+.action_item a,
+.member_link {
+  background: var(--crm-blue) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  border: 0 !important;
+  padding: 8px 13px !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18) !important;
+}
+
+a {
+  color: var(--crm-blue) !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
+}
+
+/* Badges */
+.status-tag,
+.status_tag {
+  border-radius: 999px !important;
+  padding: 5px 9px !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  text-transform: capitalize !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  border: 0 !important;
+}
+
+[data-status="validated"],
+[data-status="delivered"],
+[data-status="converted"],
+[data-status="signed"],
+.status_tag.validated,
+.status_tag.delivered,
+.status_tag.converted {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+[data-status="invalid"],
+[data-status="failed"],
+[data-status="rejected"],
+.status_tag.invalid,
+.status_tag.failed,
+.status_tag.rejected {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+}
+
+[data-status="routed"],
+[data-status="dispatched"],
+[data-status="pending"],
+[data-status="retrying"],
+.status_tag.routed,
+.status_tag.dispatched,
+.status_tag.pending,
+.status_tag.retrying {
+  background: #dbeafe !important;
+  color: #1e40af !important;
+}
+
+[data-status="suppressed"],
+[data-status="disqualified"],
+[data-status="unroutable"],
+[data-status="test"],
+.status_tag.suppressed,
+.status_tag.disqualified,
+.status_tag.unroutable,
+.status_tag.test {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+}
+
+/* Flash and empty states */
+.flash,
+.flash_notice,
+.flash_error,
+.flash_alert {
+  border-radius: 14px !important;
+  padding: 12px 14px !important;
+  margin-bottom: 16px !important;
+  border: 1px solid transparent !important;
+}
+
+.flash_notice {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+  border-color: #86efac !important;
+}
+
+.blank_slate,
+.blank_slate_container {
+  color: var(--crm-muted) !important;
+  background: #f8fafc !important;
+  border: 1px dashed #cbd5e1 !important;
+  border-radius: 14px !important;
+  padding: 18px !important;
+  text-align: center !important;
+}
+
+/* JSON */
+pre {
+  background: #0f172a !important;
+  color: #e5e7eb !important;
+  border: 1px solid #334155 !important;
+  border-radius: 12px !important;
+  padding: 13px !important;
+  overflow: auto !important;
+  white-space: pre-wrap !important;
+  line-height: 1.5 !important;
+  font-size: 13px !important;
+}
+
+/* Footer */
+footer,
+#footer {
+  color: var(--crm-muted) !important;
+  border-top: 1px solid var(--crm-border) !important;
+  margin-top: 26px !important;
+}
+
+/* Detail page */
+.attributes-table th,
+.attributes_table th {
+  width: 34% !important;
+}
+
+/* Responsive */
+@media (max-width: 1280px) {
+  .crm-stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .crm-dashboard-main-grid,
+  .crm-grid-two,
+  .crm-donut-wrap {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  [data-test-page-content] {
+    padding: 16px !important;
+  }
+
+  .crm-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* === Final compact CRM polish === */
+
+/* Hide nonessential assessment UI */
+.dark-mode-toggle,
+[data-item-id="comments"],
+#filters_sidebar_section,
+.paginated-collection-footer {
+  display: none !important;
+}
+
+/* Restore normal user avatar size */
+#user-menu-button {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 999px !important;
+}
+
+#user-menu-button svg {
+  width: 30px !important;
+  height: 30px !important;
+  max-width: 30px !important;
+  max-height: 30px !important;
+}
+
+/* Remove ugly sort arrows completely */
+.data-table-sorted-icon,
+thead svg,
+th svg,
+th a svg {
+  display: none !important;
+}
+
+th a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+/* Reduce large empty spacing */
+[data-test-page-header] {
+  padding: 22px 28px 6px !important;
+  margin-bottom: 8px !important;
+}
+
+[data-test-page-content] {
+  padding: 12px 28px 28px !important;
+}
+
+.crm-hero {
+  padding: 16px 18px !important;
+  margin-bottom: 12px !important;
+  border-radius: 12px !important;
+}
+
+.crm-stats-grid {
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+
+.crm-stat-card {
+  padding: 13px 15px !important;
+  border-radius: 12px !important;
+}
+
+.crm-stat-card strong {
+  font-size: 25px !important;
+}
+
+.crm-dashboard-main-grid,
+.crm-grid-two {
+  gap: 12px !important;
+}
+
+.panel {
+  border-radius: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+.panel-title,
+.panel h3 {
+  padding: 12px 14px !important;
+}
+
+.panel-body,
+.panel_contents {
+  padding: 14px !important;
+}
+
+/* This is the table outline padding the user asked for */
+.paginated-collection,
+.panel .data-table,
+.panel table {
+  border-radius: 12px !important;
+}
+
+.paginated-collection {
+  padding: 12px !important;
+}
+
+.paginated-collection-contents {
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 12px !important;
+  overflow-x: auto !important;
+  background: #ffffff !important;
+}
+
+/* Keep table cells compact, not padded too heavily */
+td,
+th {
+  padding: 9px 11px !important;
+}
+
+td {
+  font-size: 13px !important;
+}
+
+th {
+  font-size: 10.5px !important;
+}
+
+/* Better index table shape */
+#index_table_leads {
+  min-width: 1120px !important;
+}
+
+.index-as-table,
+.index_as_table {
+  overflow-x: auto !important;
+}
+
+/* Professional pagination */
+.paginated-collection-pagination {
+  padding: 14px 4px 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex-wrap: wrap !important;
+}
+
+.pagination-information,
+.pagination_information {
+  color: var(--crm-muted) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.pagination {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.pagination a,
+.pagination span,
+.paginated-collection-pagination a,
+.paginated-collection-pagination span {
+  min-width: 34px !important;
+  height: 34px !important;
+  padding: 0 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 9px !important;
+  border: 1px solid var(--crm-border) !important;
+  background: #ffffff !important;
+  color: #334155 !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+.pagination .current,
+.pagination span.current,
+.paginated-collection-pagination .current {
+  background: var(--crm-blue) !important;
+  border-color: var(--crm-blue) !important;
+  color: #ffffff !important;
+}
+
+/* Cleaner default ActiveAdmin login page without custom ERB */
+body:has(form[action*="/admin/login"]) {
+  background: linear-gradient(135deg, #eef4ff 0%, #f8fafc 100%) !important;
+}
+
+body:has(form[action*="/admin/login"]) [data-test-page-header] {
+  display: none !important;
+}
+
+body:has(form[action*="/admin/login"]) [data-test-page-content],
+body:has(form[action*="/admin/login"]) .main-content-container {
+  min-height: calc(100vh - 90px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px !important;
+}
+
+body:has(form[action*="/admin/login"]) .flash,
+body:has(form[action*="/admin/login"]) .flash_alert,
+body:has(form[action*="/admin/login"]) .flash_notice {
+  position: fixed !important;
+  top: 110px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: min(440px, calc(100vw - 40px)) !important;
+  z-index: 50 !important;
+}
+
+body:has(form[action*="/admin/login"]) h2 {
+  text-align: center !important;
+  margin-bottom: 18px !important;
+  font-size: 24px !important;
+  line-height: 1.2 !important;
+}
+
+body:has(form[action*="/admin/login"]) form {
+  background: #ffffff !important;
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 14px !important;
+  padding: 26px !important;
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.14) !important;
+}
+
+body:has(form[action*="/admin/login"]) fieldset {
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+body:has(form[action*="/admin/login"]) ol,
+body:has(form[action*="/admin/login"]) li {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body:has(form[action*="/admin/login"]) label {
+  display: block !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  color: #334155 !important;
+  margin-bottom: 6px !important;
+}
+
+body:has(form[action*="/admin/login"]) input[type="email"],
+body:has(form[action*="/admin/login"]) input[type="password"] {
+  width: 100% !important;
+  margin-bottom: 15px !important;
+}
+
+body:has(form[action*="/admin/login"]) input[type="checkbox"] {
+  width: auto !important;
+  margin-right: 6px !important;
+}
+
+body:has(form[action*="/admin/login"]) input[type="submit"] {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  margin-top: 8px !important;
+}
+
+body:has(form[action*="/admin/login"]) a {
+  display: inline-block !important;
+  margin-top: 14px !important;
+}
+
+/* Keep donut/dashboard compact */
+.crm-donut {
+  width: 165px !important;
+  height: 165px !important;
+}
+
+.crm-donut-hole {
+  width: 94px !important;
+  height: 94px !important;
+}
+
+.crm-donut-hole strong {
+  font-size: 24px !important;
+}
+
+.crm-donut-wrap {
+  grid-template-columns: 180px 1fr !important;
+  gap: 14px !important;
+}
+
+.crm-chart-row {
+  grid-template-columns: 120px 1fr 34px !important;
+  gap: 8px !important;
+}
+
+/* Less rounded overall */
+input,
+select,
+textarea,
+.button,
+.member_link,
+.status-tag,
+.status_tag {
+  border-radius: 8px !important;
+}
+
+/* === Final efficiency polish === */
+
+.dark-mode-toggle,
+[data-item-id="comments"],
+#filters_sidebar_section,
+.paginated-collection-footer {
+  display: none !important;
+}
+
+/* Avatar visible, theme hidden */
+#user-menu-button {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 7px !important;
+}
+
+#user-menu-button svg {
+  width: 28px !important;
+  height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+}
+
+/* Remove ugly table sort arrows */
+.data-table-sorted-icon,
+thead svg,
+th svg,
+th a svg {
+  display: none !important;
+}
+
+/* Compact page spacing */
+[data-test-page-header] {
+  padding: 20px 26px 6px !important;
+  margin-bottom: 6px !important;
+}
+
+[data-test-page-content] {
+  padding: 10px 26px 26px !important;
+}
+
+/* Use available space efficiently */
+.crm-stats-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+
+.crm-stat-card {
+  flex: 1 1 150px !important;
+  min-width: 150px !important;
+}
+
+.crm-dashboard-main-grid,
+.crm-grid-two {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+
+.crm-dashboard-main-grid > .panel {
+  flex: 1 1 520px !important;
+}
+
+.crm-grid-two > .panel {
+  flex: 1 1 430px !important;
+}
+
+/* 7px radius standard */
+.crm-hero,
+.crm-stat-card,
+.panel,
+.paginated-collection,
+.paginated-collection-contents,
+input,
+select,
+textarea,
+.button,
+.member_link,
+.status-tag,
+.status_tag,
+.blank_slate,
+.blank_slate_container,
+.crm-donut-hole {
+  border-radius: 7px !important;
+}
+
+/* Smaller gaps/card padding */
+.crm-hero {
+  padding: 15px 17px !important;
+  margin-bottom: 12px !important;
+}
+
+.crm-stat-card {
+  padding: 12px 14px !important;
+}
+
+.crm-stat-card strong {
+  font-size: 25px !important;
+}
+
+.panel {
+  margin-bottom: 12px !important;
+}
+
+.panel-title,
+.panel h3 {
+  padding: 11px 13px !important;
+}
+
+.panel-body,
+.panel_contents {
+  padding: 12px !important;
+}
+
+/* Table outline padding, not large cell padding */
+.paginated-collection {
+  padding: 8px !important;
+}
+
+.paginated-collection-contents {
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 7px !important;
+  overflow-x: auto !important;
+  background: #ffffff !important;
+}
+
+.panel table,
+.panel .data-table {
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 7px !important;
+  overflow: hidden !important;
+}
+
+/* Compact cells */
+td,
+th {
+  padding: 8px 10px !important;
+}
+
+td {
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+}
+
+th {
+  font-size: 10.5px !important;
+}
+
+/* Donut/chart compact */
+.crm-donut-wrap {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 14px !important;
+  align-items: center !important;
+}
+
+.crm-donut {
+  width: 150px !important;
+  height: 150px !important;
+  flex: 0 0 150px !important;
+}
+
+.crm-donut-hole {
+  width: 84px !important;
+  height: 84px !important;
+}
+
+.crm-donut-hole strong {
+  font-size: 23px !important;
+}
+
+.crm-chart-list {
+  flex: 1 1 280px !important;
+}
+
+.crm-chart-row {
+  grid-template-columns: 120px 1fr 34px !important;
+  gap: 8px !important;
+  padding: 4px 0 !important;
+}
+
+/* Professional pagination */
+.paginated-collection-pagination {
+  padding: 12px 2px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+}
+
+.pagination-information,
+.pagination_information {
+  color: var(--crm-muted) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.pagination {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.pagination a,
+.pagination span,
+.paginated-collection-pagination a,
+.paginated-collection-pagination span {
+  min-width: 30px !important;
+  height: 30px !important;
+  padding: 0 9px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 7px !important;
+  border: 1px solid var(--crm-border) !important;
+  background: #ffffff !important;
+  color: #334155 !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+.pagination .current,
+.pagination span.current,
+.paginated-collection-pagination .current {
+  background: var(--crm-blue) !important;
+  color: #ffffff !important;
+  border-color: var(--crm-blue) !important;
+}
+
+/* Default ActiveAdmin login page polished without custom ERB */
+body:has(form[action*="/admin/login"]) {
+  background: linear-gradient(135deg, #eef4ff 0%, #f8fafc 100%) !important;
+}
+
+body:has(form[action*="/admin/login"]) [data-test-page-header] {
+  display: none !important;
+}
+
+body:has(form[action*="/admin/login"]) [data-test-page-content],
+body:has(form[action*="/admin/login"]) .main-content-container {
+  min-height: calc(100vh - 90px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px !important;
+}
+
+body:has(form[action*="/admin/login"]) form {
+  background: #ffffff !important;
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 7px !important;
+  padding: 24px !important;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.14) !important;
+}
+
+body:has(form[action*="/admin/login"]) fieldset {
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+body:has(form[action*="/admin/login"]) ol,
+body:has(form[action*="/admin/login"]) li {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body:has(form[action*="/admin/login"]) h2 {
+  text-align: center !important;
+  margin-bottom: 16px !important;
+  font-size: 23px !important;
+  line-height: 1.2 !important;
+}
+
+body:has(form[action*="/admin/login"]) label {
+  display: block !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  color: #334155 !important;
+  margin-bottom: 6px !important;
+}
+
+body:has(form[action*="/admin/login"]) input[type="email"],
+body:has(form[action*="/admin/login"]) input[type="password"] {
+  width: 100% !important;
+  margin-bottom: 14px !important;
+}
+
+body:has(form[action*="/admin/login"]) input[type="checkbox"] {
+  width: auto !important;
+  margin-right: 6px !important;
+}
+
+body:has(form[action*="/admin/login"]) input[type="submit"] {
+  width: 100% !important;
+  padding: 11px 15px !important;
+  margin-top: 8px !important;
+}
+
+body:has(form[action*="/admin/login"]) a {
+  display: inline-block !important;
+  margin-top: 12px !important;
+}
+
+@media (max-width: 1280px) {
+  .crm-dashboard-main-grid > .panel,
+  .crm-grid-two > .panel {
+    flex-basis: 100% !important;
+  }
+}
+
+/* === Final professional chart palette polish === */
+.crm-chart-track {
+  height: 9px !important;
+  background: #e5e7eb !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+}
+
+.crm-chart-fill {
+  height: 100% !important;
+  min-width: 4px !important;
+  border-radius: 999px !important;
+}
+
+/* === Professional donut chart refinement === */
+
+.crm-donut {
+  width: 164px !important;
+  height: 164px !important;
+  flex: 0 0 164px !important;
+  border-radius: 999px !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(15, 23, 42, 0.04),
+    0 14px 30px rgba(15, 23, 42, 0.08) !important;
+}
+
+.crm-donut-hole {
+  width: 92px !important;
+  height: 92px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08) !important;
+}
+
+.crm-donut-hole strong {
+  font-size: 24px !important;
+  color: #0f172a !important;
+}
+
+.crm-donut-hole span {
+  color: #64748b !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+.crm-chart-list {
+  gap: 7px !important;
+}
+
+.crm-chart-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-width: 0 !important;
+}
+
+.crm-chart-dot {
+  width: 9px !important;
+  height: 9px !important;
+  border-radius: 999px !important;
+  display: inline-block !important;
+  flex: 0 0 9px !important;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+.crm-chart-row {
+  grid-template-columns: 132px 1fr 58px !important;
+  gap: 9px !important;
+}
+
+.crm-chart-track {
+  height: 8px !important;
+  background: #e5e7eb !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+}
+
+.crm-chart-fill {
+  height: 100% !important;
+  min-width: 4px !important;
+  border-radius: 999px !important;
+}
+
+.crm-chart-value {
+  color: #334155 !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  text-align: right !important;
+}
+
+/* === Final professional lifecycle donut layout === */
+
+.crm-dashboard-main-grid,
+.crm-grid-two {
+  align-items: flex-start !important;
+}
+
+.crm-dashboard-main-grid > .panel:first-child {
+  flex: 0 1 430px !important;
+}
+
+.crm-dashboard-main-grid > .panel:last-child {
+  flex: 1 1 620px !important;
+}
+
+.crm-lifecycle-card {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+}
+
+.crm-lifecycle-donut-area {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 8px 0 4px !important;
+}
+
+.crm-lifecycle-donut {
+  width: 170px !important;
+  height: 170px !important;
+  border-radius: 999px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(15, 23, 42, 0.04),
+    0 12px 28px rgba(15, 23, 42, 0.08) !important;
+}
+
+.crm-lifecycle-donut-hole {
+  width: 96px !important;
+  height: 96px !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+  text-align: center !important;
+}
+
+.crm-lifecycle-donut-hole strong {
+  font-size: 25px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  color: #0f172a !important;
+}
+
+.crm-lifecycle-donut-hole span {
+  margin-top: 6px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  color: #64748b !important;
+}
+
+.crm-lifecycle-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  padding-top: 4px !important;
+}
+
+.crm-lifecycle-row {
+  display: grid !important;
+  grid-template-columns: minmax(110px, 150px) minmax(120px, 1fr) 58px !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.crm-lifecycle-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  color: #334155 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+}
+
+.crm-lifecycle-dot {
+  width: 9px !important;
+  height: 9px !important;
+  border-radius: 999px !important;
+  flex: 0 0 9px !important;
+  display: inline-block !important;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.05) !important;
+}
+
+.crm-lifecycle-track {
+  height: 7px !important;
+  background: #e5e7eb !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+}
+
+.crm-lifecycle-fill {
+  height: 100% !important;
+  min-width: 4px !important;
+  border-radius: 999px !important;
+}
+
+.crm-lifecycle-value {
+  text-align: right !important;
+  color: #334155 !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+}
+
+/* Make old chart styles harmless if still present */
+.crm-donut,
+.crm-donut-hole,
+.crm-chart-list,
+.crm-chart-row,
+.crm-chart-track,
+.crm-chart-fill,
+.crm-chart-value {
+  max-height: none !important;
+}
+
+/* Keep all final cards at 7px radius */
+.crm-hero,
+.crm-stat-card,
+.panel,
+.paginated-collection,
+.paginated-collection-contents {
+  border-radius: 7px !important;
+}
+
+/* === Dashboard polish override v4 === */
+
+.crm-hero,
+.crm-stat-card,
+.panel,
+.blank_slate,
+.paginated-collection,
+.paginated-collection-contents {
+  border-radius: 7px !important;
+}
+
+.main-content-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+.crm-hero {
+  margin: 0 0 16px 0 !important;
+  padding: 16px 18px !important;
+  background: linear-gradient(180deg, #fbfdff 0%, #f4f7fb 100%) !important;
+  border: 1px solid #dbe3ef !important;
+}
+
+.crm-stats-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  margin-bottom: 16px !important;
+}
+
+.crm-stats-grid > .crm-stat-card {
+  flex: 1 1 150px !important;
+  min-width: 150px !important;
+  padding: 14px 16px !important;
+}
+
+.crm-dashboard-main-grid {
+  display: grid !important;
+  grid-template-columns: minmax(390px, 430px) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  align-items: stretch !important;
+}
+
+.crm-grid-two {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  align-items: stretch !important;
+}
+
+.crm-dashboard-main-grid > .panel,
+.crm-grid-two > .panel {
+  margin: 0 !important;
+  height: 100% !important;
+}
+
+.panel {
+  overflow: hidden !important;
+  border: 1px solid #dbe3ef !important;
+  background: #ffffff !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 10px 24px rgba(15, 23, 42, 0.04) !important;
+}
+
+.panel > h3,
+.panel .panel-title {
+  margin: 0 !important;
+  padding: 14px 16px !important;
+  background: #fcfdff !important;
+  border-bottom: 1px solid #e8eef5 !important;
+}
+
+.panel .panel-body,
+.panel .panel_contents {
+  padding: 16px !important;
+}
+
+.crm-lifecycle-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+  min-height: 100% !important;
+}
+
+.crm-lifecycle-donut-area {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 2px 0 0 !important;
+}
+
+.crm-lifecycle-donut {
+  width: 190px !important;
+  height: 190px !important;
+  border-radius: 999px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(15, 23, 42, 0.04),
+    0 12px 26px rgba(15, 23, 42, 0.06) !important;
+}
+
+.crm-lifecycle-donut-hole {
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+  text-align: center !important;
+}
+
+.crm-lifecycle-donut-hole strong {
+  font-size: 25px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  color: #0f172a !important;
+}
+
+.crm-lifecycle-donut-hole span {
+  margin-top: 6px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  color: #64748b !important;
+}
+
+.crm-lifecycle-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  margin-top: 2px !important;
+}
+
+.crm-lifecycle-row {
+  display: grid !important;
+  grid-template-columns: minmax(120px, 145px) minmax(120px, 1fr) 68px !important;
+  gap: 12px !important;
+  align-items: center !important;
+}
+
+.crm-lifecycle-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  color: #334155 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+}
+
+.crm-lifecycle-dot {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 999px !important;
+  display: inline-block !important;
+  box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.05) !important;
+}
+
+.crm-lifecycle-track {
+  height: 8px !important;
+  background: #e8edf4 !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+}
+
+.crm-lifecycle-fill {
+  height: 100% !important;
+  min-width: 4px !important;
+  border-radius: 999px !important;
+}
+
+.crm-lifecycle-value {
+  text-align: right !important;
+  color: #334155 !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+}
+
+.crm-dashboard-main-grid .panel:last-child .panel-body,
+.crm-dashboard-main-grid .panel:last-child .panel_contents,
+.crm-grid-two .panel .panel-body,
+.crm-grid-two .panel .panel_contents {
+  padding-top: 14px !important;
+}
+
+.panel table.data-table {
+  margin: 0 !important;
+}
+
+.panel table.data-table thead th {
+  background: #f5f8fc !important;
+}
+
+.panel table.data-table tbody td,
+.panel table.data-table tbody th {
+  background: #ffffff !important;
+}
+
+.panel .blank_slate {
+  margin: 0 !important;
+  min-height: 72px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+@media (max-width: 1180px) {
+  .crm-dashboard-main-grid,
+  .crm-grid-two {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* === Final professional form polish === */
+
+footer,
+#footer,
+.text-sm.text-center.mt-16 {
+  display: none !important;
+}
+
+form.formtastic {
+  max-width: 760px !important;
+  background: #ffffff !important;
+  border: 1px solid #dbe3ef !important;
+  border-radius: 7px !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 12px 28px rgba(15, 23, 42, 0.06) !important;
+  overflow: hidden !important;
+  margin-top: 16px !important;
+}
+
+form.formtastic fieldset {
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+form.formtastic fieldset.inputs > legend {
+  display: block !important;
+  width: 100% !important;
+  padding: 14px 18px !important;
+  background: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  font-size: 15px !important;
+  font-weight: 850 !important;
+}
+
+form.formtastic fieldset.inputs > legend span {
+  color: #0f172a !important;
+}
+
+form.formtastic ol {
+  list-style: none !important;
+  padding: 18px !important;
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 16px !important;
+}
+
+form.formtastic li.input {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: 180px minmax(280px, 420px) !important;
+  gap: 14px !important;
+  align-items: center !important;
+}
+
+form.formtastic li.input label {
+  color: #334155 !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+form.formtastic input[type="text"],
+form.formtastic input[type="email"],
+form.formtastic input[type="password"],
+form.formtastic input[type="number"],
+form.formtastic textarea,
+form.formtastic select {
+  width: 100% !important;
+  height: 42px !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 7px !important;
+  padding: 9px 11px !important;
+  box-shadow: none !important;
+}
+
+form.formtastic input:focus,
+form.formtastic textarea:focus,
+form.formtastic select:focus {
+  outline: none !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14) !important;
+}
+
+form.formtastic .inline-hints,
+form.formtastic .inline-errors {
+  grid-column: 2 !important;
+  color: #64748b !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  margin-top: -8px !important;
+}
+
+form.formtastic .inline-errors {
+  color: #b91c1c !important;
+  font-weight: 700 !important;
+}
+
+form.formtastic fieldset.actions {
+  padding: 16px 18px !important;
+  background: #fbfdff !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+form.formtastic fieldset.actions ol {
+  padding: 0 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+
+form.formtastic fieldset.actions li {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+form.formtastic input[type="submit"] {
+  height: 40px !important;
+  border-radius: 7px !important;
+  padding: 0 16px !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  font-weight: 850 !important;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18) !important;
+}
+
+form.formtastic .cancel a,
+form.formtastic a.cancel {
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0 14px !important;
+  border-radius: 7px !important;
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+}
+
+.breadcrumb,
+[data-test-page-header] nav {
+  color: #64748b !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+[data-test-page-header] h2 {
+  margin-top: 4px !important;
+}
+
+@media (max-width: 760px) {
+  form.formtastic li.input {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+
+  form.formtastic .inline-hints,
+  form.formtastic .inline-errors {
+    grid-column: 1 !important;
+  }
+}
+
+/* === Final icon-only action buttons === */
+
+.action_items,
+[data-test-page-header] .action_items {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.action_items a:not(.aa-icon-btn) {
+  display: none !important;
+}
+
+.aa-actions-group {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 7px !important;
+  white-space: nowrap !important;
+}
+
+.aa-icon-btn {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  padding: 0 !important;
+  border-radius: 7px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffffff !important;
+  border: 1px solid #d7dfeb !important;
+  color: #1d4ed8 !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+  text-decoration: none !important;
+}
+
+.aa-icon-btn:hover {
+  background: #f6f9fc !important;
+  border-color: #c4d2e4 !important;
+  color: #1e40af !important;
+  text-decoration: none !important;
+}
+
+.aa-icon-btn svg {
+  width: 16px !important;
+  height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+}
+
+.aa-icon-btn-danger {
+  color: #b42318 !important;
+  border-color: #f0c3bf !important;
+  background: #fff7f6 !important;
+}
+
+.aa-icon-btn-danger:hover {
+  background: #feeceb !important;
+  border-color: #e7aaa1 !important;
+  color: #912018 !important;
+}
+
+.aa-icon-btn-primary,
+.aa-icon-btn-large {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18) !important;
+}
+
+.aa-icon-btn-primary:hover,
+.aa-icon-btn-large:hover {
+  background: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+
+.aa-icon-btn-primary svg,
+.aa-icon-btn-large svg {
+  width: 17px !important;
+  height: 17px !important;
+  max-width: 17px !important;
+  max-height: 17px !important;
+}
+
+/* Hide old text labels if any survived */
+.aa-icon-btn span,
+.aa-create-btn span {
+  display: none !important;
+}
+
+/* Make action column compact */
+td .aa-actions-group {
+  width: max-content !important;
+}

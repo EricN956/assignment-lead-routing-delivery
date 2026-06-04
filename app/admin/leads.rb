@@ -3,7 +3,11 @@ ActiveAdmin.register Lead do
 
   actions :index, :show
 
+  config.clear_action_items!
   config.sort_order = "created_at_desc"
+  config.filters = true
+  config.batch_actions = false
+  config.per_page = 10
 
   scope :all, default: true
   Lead::STAGES.each do |stage_name|
@@ -15,40 +19,45 @@ ActiveAdmin.register Lead do
   filter :first_name_or_last_name_cont, label: "Name"
   filter :phone_cont, label: "Phone"
   filter :email_cont, label: "Email"
-  filter :stage,
-         as: :select,
-         collection: Lead::STAGES.map { |stage| [stage.humanize, stage] }
+  filter :stage, as: :select, collection: Lead::STAGES.map { |stage| [stage.humanize, stage] }
   filter :accident_state
   filter :test_lead
   filter :created_at
 
   index title: "CRM Leads" do
-    selectable_column
-    id_column
-
-    column :source_claim_id
-    column "Name", sortable: :last_name do |lead|
-      lead.full_name.presence || status_tag("Missing", class: "warning")
+    column "ID", :id
+    column "Source Claim", :source_claim_id
+    column "Lead", sortable: :last_name do |lead|
+      link_to(lead.full_name.presence || "Missing name", admin_lead_path(lead))
     end
     column :publisher
-    column :phone
-    column :email
     column :accident_state
-    column :stage do |lead|
+    column "Stage" do |lead|
       status_tag(lead.stage)
     end
-    column :test_lead
+    column "Type" do |lead|
+      lead.test_lead? ? status_tag("test") : "Live"
+    end
     column "Deliveries" do |lead|
-      if lead.lead_deliveries.loaded? || lead.lead_deliveries.exists?
-        lead.lead_deliveries.includes(:recipient).map do |delivery|
-          "#{delivery.recipient.code}: #{delivery.status}"
-        end.join(", ")
-      else
-        "—"
+      lead.lead_deliveries.count
+    end
+    column "Delivery Status" do |lead|
+      summaries = lead.lead_deliveries.includes(:recipient).map do |delivery|
+        "#{delivery.recipient&.code || "unknown"}: #{delivery.status}"
       end
+
+      summaries.any? ? summaries.join(", ") : "—"
+    end
+    column "Conversions" do |lead|
+      lead.conversions.count
     end
     column :created_at
-    actions defaults: true
+
+    column "" do |lead|
+      content_tag :div, class: "aa-actions-group" do
+        aa_view_button(admin_lead_path(lead))
+      end
+    end
   end
 
   show title: proc { |lead| "Lead #{lead.source_claim_id}" } do

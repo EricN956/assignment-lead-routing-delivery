@@ -1,5 +1,6 @@
 ActiveAdmin.setup do |config|
-  # == Site Title
+  config.comments = false
+# == Site Title
   #
   # Set the title that is displayed on the main layout
   # for each of the active admin pages. Can also be customized
@@ -127,8 +128,7 @@ ActiveAdmin.setup do |config|
   # This allows your users to comment on any resource registered with Active Admin.
   #
   # You can completely disable comments:
-  # config.comments = false
-  #
+#
   # You can change the name under which comments are registered:
   # config.comments_registration_name = 'AdminComment'
   #
@@ -273,3 +273,9 @@ ActiveAdmin.setup do |config|
   #
   # config.order_clause = MyOrderClause
 end
+
+
+ActiveAdmin.setup do |config|
+  config.view_factory.register helper: ActiveAdminIconHelper if defined?(ActiveAdminIconHelper)
+end
+
