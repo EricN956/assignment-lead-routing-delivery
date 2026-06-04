@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@source "../../../app/admin/**/*.rb";
+@source "../../../app/views/**/*.erb";
+@source "../../../app/helpers/**/*.rb";
+@source "../../../vendor/bundle/ruby/3.2.0/gems/activeadmin-4.0.0.beta22/app/views/**/*.erb";
+@source "../../../vendor/bundle/ruby/3.2.0/gems/activeadmin-4.0.0.beta22/app/helpers/**/*.rb";
+@source "../../../vendor/bundle/ruby/3.2.0/gems/activeadmin-4.0.0.beta22/lib/**/*.rb";
