@@ -2026,3 +2026,193 @@ form.formtastic a.cancel {
 td .aa-actions-group {
   width: max-content !important;
 }
+
+/* === Final login page repair === */
+
+/* Login page shell */
+body:has(form[action*="/admin/login"]) {
+  background: #f4f7fb !important;
+}
+
+body:has(form[action*="/admin/login"]) [data-test-page-header] {
+  display: none !important;
+}
+
+body:has(form[action*="/admin/login"]) [data-test-page-content],
+body:has(form[action*="/admin/login"]) .main-content-container {
+  min-height: calc(100vh - 72px) !important;
+  width: 100% !important;
+  padding: 32px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+}
+
+/* Login title */
+body:has(form[action*="/admin/login"]) h2 {
+  width: min(420px, calc(100vw - 40px)) !important;
+  margin: 0 0 14px 0 !important;
+  padding: 0 !important;
+  color: #0f172a !important;
+  font-size: 25px !important;
+  line-height: 1.18 !important;
+  font-weight: 850 !important;
+  text-align: center !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Login form card */
+body:has(form[action*="/admin/login"]) form.formtastic {
+  /* width: min(420px, calc(100vw - 40px)) !important; */
+  max-width: 420px !important;
+  margin: 0 !important;
+  padding: 24px !important;
+  background: #ffffff !important;
+  border: 1px solid #dbe3ef !important;
+  border-radius: 7px !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 18px 44px rgba(15, 23, 42, 0.12) !important;
+  overflow: visible !important;
+}
+
+/* Reset ActiveAdmin/Formtastic internal layout only on login */
+body:has(form[action*="/admin/login"]) form.formtastic fieldset,
+body:has(form[action*="/admin/login"]) form.formtastic fieldset.inputs,
+body:has(form[action*="/admin/login"]) form.formtastic fieldset.actions {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body:has(form[action*="/admin/login"]) form.formtastic legend {
+  display: none !important;
+}
+
+body:has(form[action*="/admin/login"]) form.formtastic ol {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+body:has(form[action*="/admin/login"]) form.formtastic li {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 14px 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  min-height: 0 !important;
+}
+
+/* Labels and inputs */
+body:has(form[action*="/admin/login"]) form.formtastic label {
+  display: block !important;
+  width: auto !important;
+  margin: 0 0 6px 0 !important;
+  padding: 0 !important;
+  color: #334155 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  text-align: left !important;
+}
+
+body:has(form[action*="/admin/login"]) form.formtastic input[type="email"],
+body:has(form[action*="/admin/login"]) form.formtastic input[type="password"] {
+  display: block !important;
+  width: 100% !important;
+  height: 42px !important;
+  margin: 0 !important;
+  padding: 9px 11px !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 7px !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+body:has(form[action*="/admin/login"]) form.formtastic input[type="email"]:focus,
+body:has(form[action*="/admin/login"]) form.formtastic input[type="password"]:focus {
+  outline: none !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14) !important;
+}
+
+/* Remember me */
+body:has(form[action*="/admin/login"]) form.formtastic li.boolean {
+  margin: 2px 0 16px 0 !important;
+}
+
+body:has(form[action*="/admin/login"]) form.formtastic li.boolean label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  color: #334155 !important;
+  font-size: 13px !important;
+  font-weight: 750 !important;
+}
+
+body:has(form[action*="/admin/login"]) form.formtastic input[type="checkbox"] {
+  width: 14px !important;
+  height: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Submit */
+body:has(form[action*="/admin/login"]) form.formtastic fieldset.actions li {
+  margin: 0 !important;
+}
+
+body:has(form[action*="/admin/login"]) form.formtastic input[type="submit"] {
+  width: 100% !important;
+  height: 42px !important;
+  margin: 0 !important;
+  padding: 0 16px !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  font-size: 15px !important;
+  font-weight: 850 !important;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.2) !important;
+  cursor: pointer !important;
+}
+
+body:has(form[action*="/admin/login"]) form.formtastic input[type="submit"]:hover {
+  background: #1d4ed8 !important;
+}
+
+/* Forgot password link */
+body:has(form[action*="/admin/login"]) a {
+  margin-top: 14px !important;
+  color: #2563eb !important;
+  font-size: 13px !important;
+  font-weight: 750 !important;
+  text-decoration: none !important;
+}
+
+body:has(form[action*="/admin/login"]) a:hover {
+  text-decoration: underline !important;
+}
+
+/* Flash message */
+body:has(form[action*="/admin/login"]) .flash,
+body:has(form[action*="/admin/login"]) .flash_alert,
+body:has(form[action*="/admin/login"]) .flash_notice {
+  width: min(420px, calc(100vw - 40px)) !important;
+  margin: 0 0 14px 0 !important;
+  border-radius: 7px !important;
+  padding: 12px 14px !important;
+}
