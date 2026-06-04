@@ -1,14 +1,101 @@
 # Lead Routing Delivery
 
-This Rails application implements the lead routing workflow as a small CRM-style system. A lead can be followed from initial intake through validation, DNC suppression, qualification, recipient routing, delivery attempts, postback handling, and final conversion tracking.
+This Rails app implements a CRM-style lead routing workflow. It receives inbound leads, validates them, checks DNC status, qualifies them, routes them to recipients, tracks delivery attempts, receives postbacks, and records conversions.
 
-The implementation focuses on making the workflow easy to inspect and reason about. Each important decision creates an audit event, recipient configuration is stored in the database instead of being hard-coded, and delivery/postback behavior is handled idempotently to avoid duplicate records.
+The goal is to make the lead lifecycle easy to review from the admin UI, not just from logs or test output.
 
 ---
 
-## What the Application Does
+## Quick Start: Run and Review
 
-The application supports the full lead lifecycle:
+### 1. Install dependencies
+
+```bash
+bundle config set --local path "vendor/bundle"
+bundle install
+npm install
+```
+
+### 2. Set up the database
+
+```bash
+bin/rails db:create
+bin/rails db:migrate
+bin/rails db:seed
+```
+
+The seed step creates the admin user and the sample recipients.
+
+### 3. Build CSS assets
+
+```bash
+npm run build:css
+```
+
+### 4. Start the Rails app
+
+```bash
+bin/rails server
+```
+
+Open the admin CRM:
+
+```text
+http://localhost:3000/admin
+```
+
+Sign in with:
+
+```text
+Email: admin@example.com
+Password: password
+```
+
+### 5. Start the mock recipient server
+
+In a second terminal:
+
+```bash
+CALLBACK_URL=http://localhost:3000/postbacks/recipients ruby mock_recipients/server.rb
+```
+
+The mock server supports DNC checks and the Apex, Beacon, and Citadel recipient endpoints.
+
+### 6. Run the workflow
+
+```bash
+bin/rails leads:ingest FILE=data/inbound_leads.json
+bin/rails leads:scrub_dnc
+bin/rails leads:qualify
+bin/rails leads:route
+bin/rails leads:dispatch
+```
+
+After running these commands, review the results here:
+
+```text
+/admin/dashboard
+/admin/leads
+/admin/leads/:id
+```
+
+### 7. Run the test suite
+
+```bash
+bundle exec rspec
+```
+
+Final verified result:
+
+```text
+172 examples, 0 failures
+```
+
+---
+
+## What the App Does
+
+The workflow follows this path:
 
 ```text
 Inbound lead data
@@ -19,156 +106,62 @@ Inbound lead data
   → recipient delivery
   → postback handling
   → conversion tracking
+  → admin review
 ```
 
 Implemented functionality includes:
 
-* Importing leads from `data/inbound_leads.json`
-* Normalizing phone numbers, emails, dates, state values, and raw payloads
-* Marking invalid leads with structured validation errors
-* Skipping duplicate leads by `source_claim_id`
-* Running DNC checks against the mock service
-* Applying qualification rules from prequalification data
-* Routing qualified leads to Apex, Beacon, and Citadel based on state, active status, priority, and daily cap
-* Sending recipient API requests through dedicated client classes
-* Recording dispatch attempts with redacted request/response audit data
-* Handling retryable and permanent delivery failures
-* Receiving signed recipient postbacks
-* Recording conversions idempotently
-* Providing an ActiveAdmin CRM interface for review and troubleshooting
+- Importing leads from `data/inbound_leads.json`
+- Normalizing lead fields such as phone, email, dates, and state
+- Storing invalid leads with clear validation errors
+- Skipping duplicate leads by `source_claim_id`
+- Running DNC checks through the mock service
+- Qualifying leads based on prequalification fields
+- Routing qualified leads to Apex, Beacon, and Citadel
+- Tracking delivery attempts and recipient responses
+- Handling retryable and permanent delivery failures
+- Receiving signed recipient postbacks
+- Recording conversions without creating duplicates
+- Providing an ActiveAdmin interface for review and troubleshooting
 
 ---
 
-## Tech Stack
+## Admin CRM
 
-* Ruby 3.2.3
-* Rails 8.1.3
-* PostgreSQL
-* ActiveAdmin
-* Devise
-* RSpec
-* WebMock
-* Net::HTTP
-* Tailwind CSS / cssbundling-rails
+The admin UI is the main place to review the workflow.
 
----
-
-## Main Models
+Useful pages:
 
 ```text
-Lead
-LeadStageEvent
-Recipient
-LeadDelivery
-DispatchAttempt
-Conversion
+/admin
+/admin/leads
+/admin/leads/:id
 ```
 
-`LeadStageEvent` is the main audit trail. It records what happened to a lead, when it happened, and why. This makes each lead reviewable without needing to inspect logs or run console commands.
+The dashboard shows:
+
+- Lead lifecycle summary
+- Delivery status summary
+- Recent failed dispatch attempts
+- Recent conversions and postbacks
+- Recent leads
+
+The lead detail page shows:
+
+- Lead summary
+- Contact and incident information
+- Validation and qualification results
+- Recipient deliveries
+- Dispatch attempts
+- Conversions and postbacks
+- Lifecycle timeline
+- Raw payload
 
 ---
 
-## Setup
+## Sample Data Result
 
-Install Ruby dependencies:
-
-```bash
-bundle config set --local path "vendor/bundle"
-bundle install
-```
-
-Install JavaScript/CSS build dependencies:
-
-```bash
-npm install
-```
-
-Build CSS assets:
-
-```bash
-npm run build:css
-```
-
-Set up the database:
-
-```bash
-bin/rails db:create
-bin/rails db:migrate
-bin/rails db:seed
-```
-
-The seed data creates:
-
-```text
-Admin user:
-admin@example.com
-password
-
-Recipients:
-apex
-beacon
-citadel
-```
-
----
-
-## Running the Test Suite
-
-Run the full test suite:
-
-```bash
-bundle exec rspec
-```
-
-The test suite covers the main workflow, including ingestion, validation, duplicate handling, DNC checks, qualification, routing, recipient clients, dispatch execution, postback signature verification, idempotent conversions, and the ActiveAdmin CRM screens.
-
----
-
-## Running the App
-
-Start Rails:
-
-```bash
-bin/rails server
-```
-
-Open ActiveAdmin:
-
-```text
-http://localhost:3000/admin
-```
-
----
-
-## Mock Recipient Server
-
-Start the mock recipient server in a second terminal:
-
-```bash
-CALLBACK_URL=http://localhost:3000/postbacks/recipients ruby mock_recipients/server.rb
-```
-
-The mock server provides:
-
-```text
-GET  /health
-POST /scrub/dnc
-POST /apex/v2/leads
-POST /beacon/api/addLead
-POST /citadel/intake
-```
-
----
-
-## Running the Workflow
-
-Import the inbound leads:
-
-```bash
-bin/rails leads:ingest FILE=data/inbound_leads.json
-```
-
-Expected result for the provided sample file:
+Running the import task against the provided sample file should produce:
 
 ```text
 total=25
@@ -179,35 +172,11 @@ duplicates=1
 failed=0
 ```
 
-Run DNC suppression:
-
-```bash
-bin/rails leads:scrub_dnc
-```
-
-Run qualification:
-
-```bash
-bin/rails leads:qualify
-```
-
-Route qualified leads:
-
-```bash
-bin/rails leads:route
-```
-
-Dispatch routed deliveries:
-
-```bash
-bin/rails leads:dispatch
-```
-
 ---
 
 ## Recipient Integrations
 
-The recipient integrations are separated into individual client classes so each downstream contract stays isolated.
+The app includes three recipient integrations.
 
 ### Apex
 
@@ -225,7 +194,7 @@ Form-encoded payload
 API key submitted in the form body
 ```
 
-Beacon returns HTTP 200 for both success and rejection, so the client reads the response body to determine the final delivery result.
+Beacon can return HTTP 200 for both accepted and rejected leads, so the response body is checked before deciding the delivery result.
 
 ### Citadel
 
@@ -241,7 +210,7 @@ Citadel handles duplicate and rate-limit responses separately.
 
 ## Postbacks
 
-The postback endpoint is:
+Recipient postbacks are received at:
 
 ```text
 POST /postbacks/recipients
@@ -266,56 +235,27 @@ rejected
 not_qualified
 ```
 
-Signatures are verified using:
-
-```ruby
-Digest::SHA256.hexdigest("#{source_claim_id}:#{disposition}:#{POSTBACK_SHARED_SECRET}")
-```
-
-Postbacks are idempotent. If the same signed postback is received more than once, the application does not create duplicate conversion records, but it still records that the duplicate postback was received.
+Postbacks are signed using the shared secret configured for the app. Repeated postbacks do not create duplicate conversion records.
 
 ---
 
-## Admin CRM
+## Tech Stack
 
-The ActiveAdmin interface is available at:
-
-```text
-/admin
-/admin/leads
-/admin/leads/:id
-```
-
-The dashboard shows a quick operational summary:
-
-```text
-Lead Lifecycle Summary
-Delivery Status Summary
-Recent Failed Dispatch Attempts
-Recent Conversions and Postbacks
-Recent Leads
-```
-
-The lead detail page shows:
-
-```text
-Lead Summary
-Contact and Incident
-Validation and Qualification
-Recipient Deliveries
-Dispatch Attempts
-Conversions and Postbacks
-Lifecycle Timeline
-Raw Payload
-```
-
-These views make the lead lifecycle reviewable through the UI instead of relying only on tests or console output.
+- Ruby 3.2.3
+- Rails 8.1.3
+- PostgreSQL
+- ActiveAdmin
+- Devise
+- RSpec
+- WebMock
+- Net::HTTP
+- Tailwind CSS / cssbundling-rails
 
 ---
 
 ## Configuration
 
-Runtime configuration is centralized in:
+Runtime configuration is stored in:
 
 ```text
 config/assessment.yml
@@ -327,7 +267,7 @@ Local example values are provided in:
 .env.example
 ```
 
-Important configurable values include:
+Important values include:
 
 ```text
 MOCK_RECIPIENTS_BASE_URL
@@ -341,21 +281,24 @@ DISPATCH_MAX_ATTEMPTS
 
 ---
 
-## Design Choices
+## Design Notes
 
-The routing logic is data-driven. Recipients are stored as database records, and the routing processor evaluates active status, accepted states, daily cap, and priority.
+A few choices were made to keep the workflow reviewable and easy to extend:
 
-Recipient API logic is kept separate from the dispatch executor. The dispatch layer only understands a shared delivery result contract, while Apex, Beacon, and Citadel each handle their own request and response format.
+- Lead decisions are recorded as lifecycle events.
+- Recipient configuration is stored in the database instead of being hard-coded.
+- Apex, Beacon, and Citadel each have their own client class.
+- Dispatch records redacted request and response details.
+- Imports and postbacks are idempotent.
+- Routing and dispatch are separated so each step can be tested independently.
 
-The system is intentionally audit-first. Validation failures, duplicate imports, DNC decisions, qualification failures, routing decisions, dispatch attempts, and postbacks are all visible through the lead timeline.
+More detailed architecture notes are available in:
 
-Sensitive values such as API keys, bearer tokens, passwords, and signatures are filtered or redacted before being stored in audit data.
+```text
+docs/ARCHITECTURE.md
+```
 
----
-
-## Reference
-
-The original assignment materials are preserved under:
+The original assignment materials are preserved in:
 
 ```text
 docs/reference/ASSIGNMENT_README.md
